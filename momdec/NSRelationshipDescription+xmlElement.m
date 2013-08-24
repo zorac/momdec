@@ -16,6 +16,9 @@
     NSXMLElement *element = [super xmlElement];
     [element setName:@"relationship"];
     
+    if ([self isToMany]) {
+        [element addAttribute:[NSXMLNode attributeWithName:@"toMany" stringValue:@"YES"]];
+    }
     if ([self minCount]) {
         [element addAttribute:[NSXMLNode attributeWithName:@"minCount" stringValue:[NSString stringWithFormat:@"%ld", (unsigned long)[self minCount]]]];
     }
