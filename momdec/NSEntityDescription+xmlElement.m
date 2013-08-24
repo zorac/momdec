@@ -73,10 +73,20 @@
     
     // Add children for entity attributes.
     for (NSPropertyDescription *propertyDescription in [self properties]) {
-        [element addChild:[propertyDescription xmlElement]];
+        if (![self ancestorHasProperty:propertyDescription.name]) {
+            [element addChild:[propertyDescription xmlElement]];
+        }
     }
     
     return element;
+}
+
+- (BOOL)ancestorHasProperty:(NSString *)name
+{
+    NSEntityDescription *parent = [self superentity];
+    if (parent == nil) return false;
+    if ([[parent propertiesByName] objectForKey:name] != nil) return true;
+    return [parent ancestorHasProperty:name];
 }
 
 @end
